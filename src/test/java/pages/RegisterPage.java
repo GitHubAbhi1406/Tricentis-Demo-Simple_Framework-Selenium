@@ -2,13 +2,17 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RegisterPage{
 	
 	WebDriver driver;
+	WebDriverWait wait;
 	
-	public RegisterPage(WebDriver driver) {
+	public RegisterPage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
+		this.wait = wait;
 	}
 	
 	By register_link = By.linkText("Register");
@@ -19,6 +23,7 @@ public class RegisterPage{
 	By password = By.id("Password");
 	By cpass = By.id("ConfirmPassword");
 	By register_button = By.id("register-button");
+	By success_msg = By.cssSelector(".message-error li");
 	
 	public void clickRegisterLink() {
 		driver.findElement(register_link).click();
@@ -50,5 +55,15 @@ public class RegisterPage{
 	
 	public void clickRegisterButton() {
 		driver.findElement(register_button).click();
+	}
+	
+	public String getDuplicateEmailError() {
+		
+		try {
+			return wait.until(ExpectedConditions.visibilityOfElementLocated(success_msg)).getText();
+		}
+		catch(Exception e) {
+			return "";
+		}
 	}
 }
